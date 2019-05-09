@@ -1,0 +1,114 @@
+/*Codifique una función en C++ para la situación que se describe a continuación:
+
+Un sistema de iluminación automático se implementa a través de 8 salidas del puerto de un microcontrolador,
+ las salidas se representan con un arreglo de enteros,
+ cada salida se activa o se desactiva cada día dependiendo del estado de las salidas vecinas el día anterior.
+ Un valor entero 1 representa una salida de iluminación activa,
+ y el valor 0 representa una salida inactiva.
+Si las salidas vecinas a ambos lados de una salida están ya sea ambas activas o inactivas entonces
+ la salida en cuestión va a estar inactiva el día siguiente,
+ de cualquier otra forma la salida estará activa el día siguiente.
+Note que las salidas en los dos extremos del puerto solo tienen una salida vecina,
+ debe asumir entonces que la salida vecina faltante es una salida que siempre está inactiva.
+ Todas las salidas se deben actualizar cada día de manera simultánea teniendo en cuenta el estado
+ previo de todas las salidas.
+
+Debe entonces codificar una función que recibe un parámetro entero que representa el número n
+de días en los que el sistema se va a actualizar;
+ y un arreglo de tipo entero con el estado inicial de cada una de las salidas.
+ La función debe almacenar en un arreglo el estado final de las salidas pasados los n días.
+
+Ejemplos:
+
+Días = 1, Estado inicial salidas = [1,0,0,0,0,1,0,0]
+Resultado: [0,1,0,0,1,0,1,0]
+
+Días = 2, Estado inicial salidas = [1,1,1,0,1,1,1,1]
+Resultado: [0,0,0,0,0,1,1,0]
+
+Criterios de calificación:
+-Análisis y solución de la situación problemática.
+-Funcionamiento de la solución.
+-Codificación de la solución.*/
+
+
+/********* REALIZADO POR: Ferney Antonio Berrio Zuleta. 1035912365**********/
+
+#include <QCoreApplication>
+    #include<iostream>
+    #include<string>
+    using namespace std;
+
+int Luminarias[8]={ 1 , 0 , 0 , 0 , 0 , 1 , 0 , 0};              // salidas del microcontriolador
+ int Tamanio = sizeof(Luminarias)/sizeof(*Luminarias);        // longitud del arreglo
+int dias = 3 ;                                              // DIAS A AUTOMATIZAR
+int Actualizacion [8];
+int Actual_luces[8];
+
+
+// declaración de funciones
+
+void iluminacion(int Luces[], int , int );
+void mostrar (int Luz[], int);
+
+
+
+int main(){
+
+    mostrar (Luminarias, Tamanio);
+   iluminacion( Luminarias , Tamanio, dias);
+
+}
+
+
+
+//***************** funciones******************
+
+
+// funcion para verificar el estado de salida vecinas y reasignar estado al día siguiente
+
+void iluminacion(int Luces[], int TAM , int dia ){
+
+    for (int g = 0 ; g < dia-1 ; g++ ) {                         // bucle para el numero DIAS A AUTOMATIZAR
+     if(g>0){
+             for (int h = 0 ; h < TAM ; h ++) {
+              Luces[h] = Actual_luces[h];     } }                           // reasigna EL ESTADO DE LAS LUCES
+
+    for ( int f = 0 ; f < TAM ; f ++ ) {                        // BUCLE para veriifcar el estado de salidas vecinas
+        if(f == 0){                                             // si es la salida 1
+        if(!Luces[f+1] ){  Actual_luces[f] = 0;}
+
+        else {                                                  // si no es así
+          Actual_luces[f] = 1;}}
+
+        else if(f == (TAM - 1)  ){                              // si es la última salida
+        if(Luces[f-1] == 0) { Actual_luces [f] = 0; }           // si la vecian esta apagada
+        else {Actual_luces[f] = 1;}}
+
+        else {
+        if( Luces[f-1] == Luces[f+1]){ Actual_luces[f] = 0;}  // si las vecinas estan apagadas o encendidas ambas
+
+        else {Actual_luces[f] = 1;}}
+
+
+                                 }
+
+
+    cout  << endl << endl << " ESTADO DE LAS LUCES EL DIA  :" << g+2 << endl;
+       for (int j=0 ; j < TAM ; j++){                           // bucle para asignar numeros al arreglo
+            cout << Actual_luces [j] << "  ,  "   ;}                     // imprime posicion del arreglo
+            cout << endl; }
+                            }
+
+  // funcion para mostrar el estado inicial de las luces
+
+void mostrar (int Luz[], int tama){
+
+        cout  << endl << endl << "LAS LUCES PARA AUTOMATIZAR SON : " << endl;
+        for (int i=0 ; i < tama ; i++){                           // bucle para asignar numeros al arreglo
+        cout << Luz [i] << "  ,  "   ;}                     // imprime posicion del arreglo
+        cout << endl;
+
+                           }
+
+
